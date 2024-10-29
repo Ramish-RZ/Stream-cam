@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Stream-cam</title>
+</head>
+<body>
+    <header>Stream-cam</header>
+    <section class="navigations">
+        <a href="index.html">Home</a>
+        <a href="about.html">About us</a>
+        <a href="contact.html">Contact us</a> 
+    </section>
+    <main>
+        <section class="live-stream">
+            <h2>Live Stream</h2>
+            <video id="liveStream" autoplay controls></video>
+            <div id="commentDisplay"></div> <!-- Container for comments -->
+        </section>
+    </main>
+
+    <script>
+        const videoElement = document.getElementById('liveStream');
+        navigator.mediaDevices.getUserMedia({
+            video: { deviceId: 'VM281' } 
+        })
+        .then(stream => {
+            videoElement.srcObject = stream;
+        })
+        .catch(error => {
+            console.error('Error accessing ManyCam:', error);
+        });
+        
+    </script>
+    
+
+    <section>
+        <section class="forms">
+            <form id="commentForm">
+                <label for="comment">Comment:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+                <br><br>
+                <button type="submit" id="postButton">Post Comment</button>
+            </form>
+        </section>
+            
+    
+    <script>
+        document.getElementById("commentForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the comment text
+    const commentText = document.getElementById("comment").value;
+
+    // Only create the comment if there is text input
+    if (commentText.trim() !== "") {
+        // Create a new comment element with visible text
+        const commentElement = document.createElement("div");
+        commentElement.className = "comment";
+        commentElement.textContent = commentText; // Ensure text is visible
+
+        // Append the comment to the display container
+        document.getElementById("commentDisplay").appendChild(commentElement);
+
+        // Clear the input field
+        document.getElementById("commentForm").reset();
+
+        // Remove the comment after the animation is complete
+        setTimeout(() => {
+            commentElement.remove();
+        }, 5000); // 3 seconds matches the animation duration
+    }
+});
+
+    </script>
+
+    <footer>
+        <p>&copy; 2024 Stream-cam. All rights reserved.</p>
+    </footer>
+</body>
+</html>
